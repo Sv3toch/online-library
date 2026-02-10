@@ -2,18 +2,22 @@ import {
     type ChangeEvent, type FormEvent,
     useState
 } from "react";
+
 import './BookForm.css'
+import {useAppDispatch} from "../../redux/hooks/hooks.ts";
+import {addBookAC} from "../../redux/books/books-slice.ts";
 
 const BookForm =()=>{
 const[title,setTitle]=useState<string>('')
 const[author,setAuthor]=useState<string>('')
+    const dispath =useAppDispatch()
 
     const handleSubmit=(e:FormEvent<HTMLFormElement>)=>{
     // dispath action
         e.preventDefault()
 
         if(title && author){
-            console.log(title, author)
+            dispath(addBookAC({title,author}))
             setTitle('')
             setAuthor('')
         }
