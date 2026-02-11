@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {type Book, booksSlice} from "./books-slice.ts";
+import {type Book, } from "./books-slice.ts";
 
 
 const initualState:Pick<Book,'title'>= {

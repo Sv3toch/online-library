@@ -2,7 +2,7 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { bookReducer } from "./slice/books-slice.ts";
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-// import {filterReducer} from "./slice/filter-slice.ts"; // использует localStorage под капотом
+import {filterReducer} from "./slice/filter-slice.ts";
 
 const persistConfig = {
     key: 'root',
@@ -11,7 +11,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
     books: bookReducer,
-    // filter: filterReducer,
+    filter: filterReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
