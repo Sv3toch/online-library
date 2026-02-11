@@ -29,12 +29,15 @@ export const booksSlice = createSlice({
                 book.isFavorite = !book.isFavorite;
             }
         }),
+        deleteAllBookAc: create.reducer((_state, _action)=>{
+            return []
+        })
     })
 })
 
 
 export const {selectBook} = booksSlice.selectors
-export const {addBookAC, deleteBookAc, isFavoriteAC} = booksSlice.actions
+export const {addBookAC, deleteBookAc, isFavoriteAC, deleteAllBookAc} = booksSlice.actions
 export const bookReducer = booksSlice.reducer
 
 export type Book = {
