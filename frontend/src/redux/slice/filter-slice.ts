@@ -10,9 +10,9 @@ const initualState:Pick<Book,'title'>= {
 const filterSlice = createSlice({
 name:'filter',
 initialState:initualState ,
-selectors:{selectFilter:(state)=>state},
+selectors:{selectTitleFilter:(state)=>state.title},
     reducers:(creator)=>({
-    titleFilterAC:creator.reducer<{title:string}>((state, action) => {
+    setTitleFilterAC:creator.reducer<{title:string}>((state, action) => {
         state.title=action.payload.title
     })
     })
@@ -20,6 +20,6 @@ selectors:{selectFilter:(state)=>state},
 
 
 
-export const {selectFilter} = filterSlice.selectors
-export const {titleFilterAC} = filterSlice.actions
+export const {selectTitleFilter} = filterSlice.selectors
+export const {setTitleFilterAC} = filterSlice.actions
 export const filterReducer =filterSlice.reducer
