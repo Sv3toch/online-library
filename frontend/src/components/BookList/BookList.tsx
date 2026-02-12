@@ -27,8 +27,15 @@ const BookList = () => {
         }
     }
 
-    const filteredBooks = books.filter((book) => (book.title.toLowerCase().includes(titleFilter.toLowerCase())) && (book.author.toLowerCase().includes(authorFilter.toLowerCase()))
-    )
+    const filteredBooks = books.filter((book) => {
+        const title = book.title || "";
+        const author = book.author || "";
+
+        return (
+            title.toLowerCase().includes(titleFilter.toLowerCase()) &&
+            author.toLowerCase().includes(authorFilter.toLowerCase())
+        );
+    });
 
     return (
         <div className='app-block book-list'>

@@ -10,19 +10,19 @@ import {addBookAC} from "../../redux/slice/books-slice.ts";
 const BookForm = () => {
     const [title, setTitle] = useState<string>('')
     const [author, setAuthor] = useState<string>('')
-    const dispath = useAppDispatch()
+    const dispatch = useAppDispatch()
 
     const handleAddRandomBook = ()=>{
 const randomIndex = Math.floor(Math.random()*booksData.length)
         const randomBook = booksData[randomIndex]
-        dispath(addBookAC({title:randomBook.title, author:randomBook.author}))
+        dispatch(addBookAC({title:randomBook.title, author:randomBook.author}))
     }
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
         if (title && author) {
-            dispath(addBookAC({title, author}))
+            dispatch(addBookAC({title, author}))
             setTitle('')
             setAuthor('')
         }
