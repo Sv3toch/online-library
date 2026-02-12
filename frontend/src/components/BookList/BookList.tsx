@@ -39,6 +39,23 @@ const BookList = () => {
         );
     });
 
+    const highlightMatch = (text:string, filter:string)=>{
+        if (!filter.trim()) return text
+
+        const regex = new RegExp(`(${filter})`, 'gi');
+
+        return text.split(regex).map((substring,i)=>{
+            if (substring.toLowerCase() ===filter.toLowerCase()){
+                return(
+                    <span key={i} className='highlight'>
+                        {substring}
+                    </span>
+                )
+            }
+            return substring
+        })
+    }
+
     return (
         <div className='app-block book-list'>
             <h2>Book List</h2>
@@ -50,7 +67,7 @@ const BookList = () => {
                     <ul>
                         {filteredBooks.map((book, i) => (
                             <li key={book.id}>
-                                <div className='book-info'>{++i}. {book.title} by <strong>{book.author}</strong></div>
+                                <div className='book-info'>{++i}. {highlightMatch(book.title, titleFilter)} by <strong>{highlightMatch(book.author, authorFilter)}</strong></div>
                                 <div className='book-actions'>
                                     {book.isFavorite ? (
                                         <BsBookmarkStarFill className='star-icon'
