@@ -1,30 +1,34 @@
 import "./Filter.css"
 import {useAppDispatch, useAppSelector} from "../../redux/hooks/hooks.ts";
 import {
-    resetFiltersAC, selectAuthorFilter,
+    resetFiltersAC, selectAuthorFilter, selectFavoriFilter,
     selectTitleFilter,
-    setAuthorFilterAC,
+    setAuthorFilterAC, setOnlyFavoriteFilterAC,
     setTitleFilterAC
 } from "../../redux/slice/filter-slice.ts";
 import type {ChangeEvent} from "react";
 
 const Filter = () => {
-const dispatch = useAppDispatch()
-    const titleFilter=useAppSelector(selectTitleFilter)
+    const dispatch = useAppDispatch()
+    const titleFilter = useAppSelector(selectTitleFilter)
     const authorFilter = useAppSelector(selectAuthorFilter)
+    const onlyFavoriteFilter = useAppSelector(selectFavoriFilter)
 
-const handleTitleFilterChange=(e: ChangeEvent<HTMLInputElement, HTMLInputElement>)=>{
-    dispatch(setTitleFilterAC({title:e.target.value}))
-}
-const handleAuthorFilterChange=(e: ChangeEvent<HTMLInputElement, HTMLInputElement>)=>{
-    dispatch(setAuthorFilterAC({author:e.target.value}))
-    console.log(authorFilter)
-}
+    const handleTitleFilterChange = (e: ChangeEvent<HTMLInputElement, HTMLInputElement>) => {
+        dispatch(setTitleFilterAC({title: e.target.value}))
+    }
+    const handleAuthorFilterChange = (e: ChangeEvent<HTMLInputElement, HTMLInputElement>) => {
+        dispatch(setAuthorFilterAC({author: e.target.value}))
+        console.log(authorFilter)
+    }
 
+    const handleOnlyFavoriteFilter = () => {
+        dispatch(setOnlyFavoriteFilterAC())
+    }
 
-const handleFiltersReset=()=>{
-    dispatch(resetFiltersAC())
-}
+    const handleFiltersReset = () => {
+        dispatch(resetFiltersAC())
+    }
     return (
         <div className='app-block filter'>
             <div className='filter-row'>
@@ -40,7 +44,12 @@ const handleFiltersReset=()=>{
                            placeholder='Filter by author'
                            value={authorFilter}/>
                 </div>
-
+                <div className='filter-group'>
+                    <label>
+                        <input type='checkbox' checked={onlyFavoriteFilter} onChange={handleOnlyFavoriteFilter}/>
+                        Only Favorite
+                    </label>
+                </div>
                 <button type='button' onClick={handleFiltersReset}>Reset filters</button>
             </div>
 

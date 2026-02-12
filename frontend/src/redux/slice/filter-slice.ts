@@ -13,7 +13,8 @@ const filterSlice = createSlice({
     name: 'filter',
     initialState: initualState,
     selectors: {selectTitleFilter: (state) => state.title,
-    selectAuthorFilter:(state)=>state.author},
+    selectAuthorFilter:(state)=>state.author,
+    selectFavoriFilter:(state)=>state.isFavorite},
     reducers: (creator) => ({
         setTitleFilterAC: creator.reducer<{ title: string }>((state, action) => {
             state.title = action.payload.title
@@ -23,11 +24,14 @@ const filterSlice = createSlice({
         }),
         setAuthorFilterAC: creator.reducer<{author:string}>((state, action)=>{
             state.author = action.payload.author
+        }),
+        setOnlyFavoriteFilterAC: creator.reducer((state)=>{
+            state.isFavorite=!state.isFavorite
         })
     })
 })
 
 
-export const {selectTitleFilter, selectAuthorFilter} = filterSlice.selectors
-export const {setTitleFilterAC, setAuthorFilterAC, resetFiltersAC} = filterSlice.actions
+export const {selectTitleFilter, selectAuthorFilter, selectFavoriFilter} = filterSlice.selectors
+export const {setTitleFilterAC, setAuthorFilterAC, resetFiltersAC, setOnlyFavoriteFilterAC} = filterSlice.actions
 export const filterReducer = filterSlice.reducer
