@@ -2,13 +2,14 @@ import {BsBookmarkStarFill, BsBookmarkStar} from "react-icons/bs";
 import './BookList.css'
 import {useAppDispatch, useAppSelector} from "../../redux/hooks/hooks.ts";
 import {deleteAllBookAc, deleteBookAc, isFavoriteAC, selectBook} from "../../redux/slice/books-slice.ts";
-import {selectTitleFilter} from "../../redux/slice/filter-slice.ts";
+import {selectAuthorFilter, selectTitleFilter} from "../../redux/slice/filter-slice.ts";
 
 
 const BookList = () => {
-    const books = useAppSelector(selectBook)
     const dispatch = useAppDispatch()
+    const books = useAppSelector(selectBook)
     const titleFilter = useAppSelector(selectTitleFilter)
+    const authorFilter = useAppSelector(selectAuthorFilter)
 
     const deleteBook = (id: string) => {
         dispatch(deleteBookAc({bookId: id}))
@@ -26,8 +27,7 @@ const BookList = () => {
         }
     }
 
-    const filteredBooks=books.filter((book)=>
-     book.title.toLowerCase().includes(titleFilter.toLowerCase())
+    const filteredBooks = books.filter((book) => (book.title.toLowerCase().includes(titleFilter.toLowerCase())) && (book.author.toLowerCase().includes(authorFilter.toLowerCase()))
     )
 
     return (
@@ -37,23 +37,24 @@ const BookList = () => {
             {books.length === 0 ? (
                 <p>No books</p>
             ) : (<>
-                <button onClick={handleDeleteAll}>Удалить все книги</button>
-                <ul>
-                    {filteredBooks.map((book, i) => (
-                        <li key={book.id}>
-                            <div className='book-info'>{++i}. {book.title} by <strong>{book.author}</strong></div>
-                            <div className='book-actions'>
-                                {book.isFavorite ? (
-                                    <BsBookmarkStarFill className='star-icon' onClick={() => isFavoryHandler(book.id)}/>
-                                ) : (
-                                    <BsBookmarkStar className='star-icon' onClick={() => isFavoryHandler(book.id)}/>
-                                )}
-                                <button onClick={() => deleteBook(book.id)}>Delete</button>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
-            </>
+                    <button onClick={handleDeleteAll}>Удалить все книги</button>
+                    <ul>
+                        {filteredBooks.map((book, i) => (
+                            <li key={book.id}>
+                                <div className='book-info'>{++i}. {book.title} by <strong>{book.author}</strong></div>
+                                <div className='book-actions'>
+                                    {book.isFavorite ? (
+                                        <BsBookmarkStarFill className='star-icon'
+                                                            onClick={() => isFavoryHandler(book.id)}/>
+                                    ) : (
+                                        <BsBookmarkStar className='star-icon' onClick={() => isFavoryHandler(book.id)}/>
+                                    )}
+                                    <button onClick={() => deleteBook(book.id)}>Delete</button>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                </>
 
             )}
         </div>
