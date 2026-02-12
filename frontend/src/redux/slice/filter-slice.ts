@@ -14,12 +14,15 @@ selectors:{selectTitleFilter:(state)=>state.title},
     reducers:(creator)=>({
     setTitleFilterAC:creator.reducer<{title:string}>((state, action) => {
         state.title=action.payload.title
-    })
+    }),
+        resetFilters: creator.reducer((_state, _action)=>{
+            return initualState
+        })
     })
 })
 
 
 
 export const {selectTitleFilter} = filterSlice.selectors
-export const {setTitleFilterAC} = filterSlice.actions
+export const {setTitleFilterAC, resetFilters} = filterSlice.actions
 export const filterReducer =filterSlice.reducer
