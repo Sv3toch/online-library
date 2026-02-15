@@ -1,12 +1,21 @@
 import {createAsyncThunk, createSlice, nanoid} from "@reduxjs/toolkit";
 import axios from "axios";
+import {setErrorAC} from "./error-slice.ts";
+import {toast} from "react-toastify";
 
 
 export const fetchBook = createAsyncThunk(
     'book/fetchBook',
-    async () => {
-        const res = await axios.get('http://localhost:4000/random-book')
-        return res.data
+    async (url: string, thunkAPI) => {
+        try {
+            const res = await axios.get(url)
+            return res.data
+        } catch (error: any) {
+            thunkAPI.dispatch(setErrorAC(error.message))
+            throw error
+
+        }
+
     }
 )
 
@@ -53,11 +62,12 @@ export const booksSlice = createSlice({
                     isFavorite: false,
                     source: "API"
                 })
+                toast.success('Книга получена из API!');
             }
         })
+
     }
 })
-
 
 
 export const {selectBook} = booksSlice.selectors

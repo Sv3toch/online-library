@@ -4,6 +4,8 @@ import {useAppDispatch} from "../../redux/hooks/hooks.ts";
 import {resetFiltersAC} from "../../redux/slice/filter-slice.ts";
 import booksData from '../../data/books.json'
 import './BookForm.css'
+import {setErrorAC} from "../../redux/slice/error-slice.ts";
+import {toast} from "react-toastify";
 
 const BookForm = () => {
     const [title, setTitle] = useState<string>('')
@@ -12,15 +14,21 @@ const BookForm = () => {
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        if (!title) {
+            dispatch(setErrorAC('You must fill title '))
+        }
+        if (!author) {
+            dispatch(setErrorAC('You must fill author'))
 
+        }
         if (title && author) {
             dispatch(resetFiltersAC())
-            dispatch(addBookAC({title, author,source:'manual'}))
+            dispatch(addBookAC({title, author, source: 'manual'}))
+            toast.success('Книга успешно добавлена!')
             setTitle('')
             setAuthor('')
 
         }
-
     }
 
     const setTitleHandler = (e: ChangeEvent<HTMLInputElement, HTMLInputElement>) => {
@@ -34,15 +42,15 @@ const BookForm = () => {
     const handleAddRandomBook = () => {
         const randomIndex = Math.floor(Math.random() * booksData.length)
         const randomBook = booksData[randomIndex]
-        dispatch(addBookAC({title: randomBook.title, author: randomBook.author, source:'random'}))
+        dispatch(addBookAC({title: randomBook.title, author: randomBook.author, source: 'random'}))
+        toast.success('Случайная книга успешно добавлена!')
 
         dispatch(resetFiltersAC())
     }
 
     const handleAddRandomBookViaAPI = async () => {
-      dispatch(fetchBook())
+        dispatch(fetchBook('http://localhost:4000/random-book'))
     }
-
 
 
     return (

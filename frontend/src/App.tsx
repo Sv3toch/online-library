@@ -2,6 +2,7 @@ import './App.css'
 import BookForm from "./components/BookForm/BookForm.tsx";
 import Filter from "./components/Filter/Filter.tsx";
 import BookList from "./components/BookList/BookList.tsx";
+import {Error} from "./components/Error/Error.tsx";
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
     </div>
 
 </main>
+        <Error/>
     </div>
   )
 }
