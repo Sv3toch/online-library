@@ -8,12 +8,13 @@ export const booksSlice = createSlice({
         selectBook: (state) => state,
     },
     reducers: (create) => ({
-        addBookAC: create.reducer<{ title: string, author: string }>((state, action) => {
+        addBookAC: create.reducer<{ title: string, author: string, source?:string }>((state, action) => {
             const newBook: Book = {
                 title: action.payload.title,
                 author: action.payload.author,
                 id: nanoid(),
-                isFavorite: false
+                isFavorite: false,
+                source:action.payload.source
             }
             state.push(newBook)
         }),
@@ -44,6 +45,8 @@ export type Book = {
     id: string,
     title: string,
     author: string,
-    isFavorite: boolean
+    isFavorite: boolean,
+    source?:string,
+
 }
 

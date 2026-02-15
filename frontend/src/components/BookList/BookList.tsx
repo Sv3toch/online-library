@@ -10,7 +10,7 @@ const BookList = () => {
     const books = useAppSelector(selectBook)
     const titleFilter = useAppSelector(selectTitleFilter)
     const authorFilter = useAppSelector(selectAuthorFilter)
-    const onlyFavoriteFilter= useAppSelector(selectFavoriFilter)
+    const onlyFavoriteFilter = useAppSelector(selectFavoriFilter)
 
     const deleteBook = (id: string) => {
         dispatch(deleteBookAc({bookId: id}))
@@ -39,14 +39,14 @@ const BookList = () => {
         );
     });
 
-    const highlightMatch = (text:string, filter:string)=>{
+    const highlightMatch = (text: string, filter: string) => {
         if (!filter.trim()) return text
 
         const regex = new RegExp(`(${filter})`, 'gi');
 
-        return text.split(regex).map((substring,i)=>{
-            if (substring.toLowerCase() ===filter.toLowerCase()){
-                return(
+        return text.split(regex).map((substring, i) => {
+            if (substring.toLowerCase() === filter.toLowerCase()) {
+                return (
                     <span key={i} className='highlight'>
                         {substring}
                     </span>
@@ -67,7 +67,9 @@ const BookList = () => {
                     <ul>
                         {filteredBooks.map((book, i) => (
                             <li key={book.id}>
-                                <div className='book-info'>{++i}. {highlightMatch(book.title, titleFilter)} by <strong>{highlightMatch(book.author, authorFilter)}</strong></div>
+                                <div
+                                    className='book-info'>{++i}. {highlightMatch(book.title, titleFilter)} by <strong>{highlightMatch(book.author, authorFilter)}</strong> ({book.source})
+                                </div>
                                 <div className='book-actions'>
                                     {book.isFavorite ? (
                                         <BsBookmarkStarFill className='star-icon'
