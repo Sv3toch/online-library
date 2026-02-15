@@ -1,6 +1,14 @@
-import {createSlice, nanoid} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, nanoid} from "@reduxjs/toolkit";
 import axios from "axios";
 
+
+export const fetchBook = createAsyncThunk(
+    'book/fetchBook',
+    async () => {
+        const res = await axios.get('http://localhost:4000/random-book')
+        return res.data
+    }
+)
 
 export const booksSlice = createSlice({
     name: 'books',
@@ -9,43 +17,47 @@ export const booksSlice = createSlice({
         selectBook: (state) => state,
     },
     reducers: (create) => ({
-        addBookAC: create.reducer<{ title: string, author: string, source?:string }>((state, action) => {
+        addBookAC: create.reducer<{ title: string, author: string, source?: string }>((state, action) => {
             const newBook: Book = {
                 title: action.payload.title,
                 author: action.payload.author,
                 id: nanoid(),
                 isFavorite: false,
-                source:action.payload.source
+                source: action.payload.source
             }
             state.push(newBook)
         }),
-        deleteBookAc:create.reducer<{bookId:string}>((state, action)=>{
-            const index = state.findIndex((book)=>book.id===action.payload.bookId)
-            if (index!==-1){
-                state.splice(index,1)
+        deleteBookAc: create.reducer<{ bookId: string }>((state, action) => {
+            const index = state.findIndex((book) => book.id === action.payload.bookId)
+            if (index !== -1) {
+                state.splice(index, 1)
             }
         }),
-        isFavoriteAC: create.reducer<{bookId: string}>((state, action) => {
+        isFavoriteAC: create.reducer<{ bookId: string }>((state, action) => {
             const book = state.find(b => b.id === action.payload.bookId);
             if (book) {
                 book.isFavorite = !book.isFavorite;
             }
         }),
-        deleteAllBookAc: create.reducer((_state, _action)=>{
+        deleteAllBookAc: create.reducer((_state, _action) => {
             return []
         })
-    })
+    }),
+    extraReducers: (builder) => {
+        builder.addCase(fetchBook.fulfilled, (state, action) => {
+            if (action.payload.title && action.payload.author) {
+                state.push({
+                    title: action.payload.title,
+                    author: action.payload.author,
+                    id: nanoid(),
+                    isFavorite: false,
+                    source: "API"
+                })
+            }
+        })
+    }
 })
 
-export const thunkFunction = async (dispatch, setState)=>{
-    try {
-        const res = await axios.get('http://localhost:4000/random-book')
-        if (res?.data?.title && res?.data?.author) {
-            dispatch(addBookAC({title: res.data.title, author: res.data.author, source:"API"}))
-        }
-    }catch (error){
-        console.log('Error fetching random book', error)
-    }}
 
 
 export const {selectBook} = booksSlice.selectors
@@ -57,7 +69,7 @@ export type Book = {
     title: string,
     author: string,
     isFavorite: boolean,
-    source?:string,
+    source?: string,
 
 }
 

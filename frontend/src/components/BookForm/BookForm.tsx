@@ -1,10 +1,6 @@
-import {
-    type ChangeEvent, type FormEvent,
-    useState
-} from "react";
-import {thunkFunction} from "../../redux/slice/books-slice.ts";
+import {type ChangeEvent, type FormEvent, useState} from "react";
+import {addBookAC, fetchBook} from "../../redux/slice/books-slice.ts";
 import {useAppDispatch} from "../../redux/hooks/hooks.ts";
-import {addBookAC} from "../../redux/slice/books-slice.ts";
 import {resetFiltersAC} from "../../redux/slice/filter-slice.ts";
 import booksData from '../../data/books.json'
 import './BookForm.css'
@@ -44,7 +40,7 @@ const BookForm = () => {
     }
 
     const handleAddRandomBookViaAPI = async () => {
-      dispatch(thunkFunction)
+      dispatch(fetchBook())
     }
 
 
