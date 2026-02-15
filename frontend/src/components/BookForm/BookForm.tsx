@@ -6,10 +6,12 @@ import booksData from '../../data/books.json'
 import './BookForm.css'
 import {setErrorAC} from "../../redux/slice/error-slice.ts";
 import {toast} from "react-toastify";
+import {FaSpinner} from "react-icons/fa6";
 
 const BookForm = () => {
     const [title, setTitle] = useState<string>('')
     const [author, setAuthor] = useState<string>('')
+    const [isLoadong, setIsLoading] = useState<boolean>(false)
     const dispatch = useAppDispatch()
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -49,7 +51,14 @@ const BookForm = () => {
     }
 
     const handleAddRandomBookViaAPI = async () => {
-        dispatch(fetchBook('http://localhost:4000/random-book'))
+      
+        try {
+            setIsLoading(true)
+            await dispatch(fetchBook('http://localhost:4000/random-book'))  
+        }catch (e) {
+            
+        }
+        setIsLoading(false)
     }
 
 
@@ -67,9 +76,16 @@ const BookForm = () => {
                 </div>
                 <button type='submit'>Add Book</button>
                 <button type='button' onClick={handleAddRandomBook}>Add Random Book</button>
-                <button type='button' onClick={handleAddRandomBookViaAPI}>Add Random via API
-                </button>
 
+                <button type='button' onClick={handleAddRandomBookViaAPI} disabled={isLoadong}>
+                    {isLoadong ?
+                        (<>
+                            <span>    Loading book...</span>
+                            <FaSpinner className='spinner'/>
+                        </>) : 'Add Random via API'
+
+                    }
+                </button>
             </form>
         </div>
     )

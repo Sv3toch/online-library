@@ -8,7 +8,10 @@ app.use(cors())
 app.get('/random-book', (req, res)=>{
     const randomIndex = Math.floor(Math.random()*booksData.length)
     const randomBook = booksData[randomIndex]
-    res.json(randomBook)
+    setTimeout(()=>{
+        res.json(randomBook)
+    },3000)
+
 })
 
 const port = process.env.PORT || 4000
