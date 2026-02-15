@@ -2,7 +2,7 @@ import {
     type ChangeEvent, type FormEvent,
     useState
 } from "react";
-import axios from "axios";
+import {thunkFunction} from "../../redux/slice/books-slice.ts";
 import {useAppDispatch} from "../../redux/hooks/hooks.ts";
 import {addBookAC} from "../../redux/slice/books-slice.ts";
 import {resetFiltersAC} from "../../redux/slice/filter-slice.ts";
@@ -44,16 +44,10 @@ const BookForm = () => {
     }
 
     const handleAddRandomBookViaAPI = async () => {
-        try {
-            const res = await axios.get('http://localhost:4000/random-book')
-            if (res?.data?.title && res?.data?.author) {
-                dispatch(addBookAC({title: res.data.title, author: res.data.author, source:"API"}))
-            }
-        }catch (error){
-console.log('Error fetching random book', error)
-        }
-
+      dispatch(thunkFunction)
     }
+
+
 
     return (
         <div className='app-block book-form'>
